@@ -1,0 +1,9 @@
+﻿<Window x:Class="StocksDisplay.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Stocks Display" Height="350" Width="525">
+    <Grid>
+        <Button Name="ShowActionsButton" Content="Show Company Actions" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="50" Click="Button_Click"/>
+        <ListBox Name="ActionsListBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,60,0,0" Width="500" Height="250"/>
+    </Grid>
+</Window>
