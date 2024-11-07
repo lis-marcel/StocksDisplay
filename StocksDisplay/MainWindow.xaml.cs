@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows;
 using StocksDisplay.Services;
+using StocksDisplay.DTO;
 
 namespace StocksDisplay
 {
@@ -15,13 +16,18 @@ namespace StocksDisplay
             _companyActionsService = new();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
             // Fetch company actions using the service
-            List<string> companyActions = _companyActionsService.GetCompanyStocks();
+            var companyStocks = await _companyActionsService.GetCompanyStocks();
 
-            // Display actions in the ListBox
-            ActionsListBox.ItemsSource = companyActions;
+            if (companyStocks != null)
+            {
+                // Display the data in the UI
+                SymbolTextBlock.Text = $"CompanySymbol: {companyStocks.CompanySymbol}";
+                NewestTextBlock.Text = $"Newest: {companyStocks.Newest}$";
+                GrowthTextBlock.Text = $"Open: {companyStocks.PercentageChange}%";
+            }
         }
     }
 }
