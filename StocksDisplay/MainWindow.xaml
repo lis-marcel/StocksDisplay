@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Stocks Display" Height="350" Width="525">
     <Grid>
-        <Button Name="ShowActionsButton" Content="Show Company Stocks" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="50" Click="Button_Click"/>
-        <StackPanel Name="StocksStackPanel" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,60,0,0" Width="500" Height="250"/>
+        <Button Name="ShowActionsButton" Content="Fetch stocks of Democracy" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="20" Click="Button_Click"/>
+        <StackPanel Name="StocksStackPanel" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,25,0,0" Width="525" Height="309"/>
     </Grid>
 </Window>
