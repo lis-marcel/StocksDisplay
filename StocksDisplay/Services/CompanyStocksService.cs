@@ -11,17 +11,19 @@ namespace StocksDisplay.Services
         private readonly string _apiKey = "AGqIVMhfoTWgh2r1WHcdbIcR35XBCkPE";
         private readonly string _apiUrl = "https://api.polygon.io/v2/aggs/ticker/";
 
-        public async Task<CompanyData> GetCompanyStocks()
+        public async Task<List<CompanyData>> GetCompanyStocks(List<string> tickers)
         {
-            return await FetchCompanyStocksFromAPI();
+            var tasks = tickers.Select(ticker => FetchCompanyStocksFromAPI(ticker)).ToList();
+            var results = await Task.WhenAll(tasks);
+            return results.ToList();
         }
 
-        private async Task<CompanyData> FetchCompanyStocksFromAPI()
+        private async Task<CompanyData> FetchCompanyStocksFromAPI(string ticker)
         {
             var sb = new StringBuilder();
 
             sb.Append(_apiUrl +
-                "LMT" +
+                ticker +
                 "/range/1/hour/2024-11-06/2024-11-06?adjusted=true&sort=asc&apiKey=" +
                 _apiKey);
 

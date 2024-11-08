@@ -1,32 +1,48 @@
 ﻿using StocksDisplay.Services;
 using System.Collections.Generic;
 using System.Windows;
-using StocksDisplay.Services;
+using System.Windows.Controls;
 using StocksDisplay.DTO;
 
 namespace StocksDisplay
 {
     public partial class MainWindow : Window
     {
-        private readonly CompanyStocksService _companyActionsService;
+        private readonly CompanyStocksService _companyStocksService;
 
         public MainWindow()
         {
             InitializeComponent();
-            _companyActionsService = new();
+            _companyStocksService = new();
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            // Fetch company actions using the service
-            var companyStocks = await _companyActionsService.GetCompanyStocks();
+            // List of stock tickers to fetch
+            var tickers = new List<string> { "LMT", "AAPL", "MSFT" };
 
-            if (companyStocks != null)
+            // Fetch company stocks using the service
+            var companyStocksList = await _companyStocksService.GetCompanyStocks(tickers);
+
+            // Clear previous data
+            StocksStackPanel.Children.Clear();
+
+            // Create and add UI elements for each stock's data
+            foreach (var companyStocks in companyStocksList)
             {
-                // Display the data in the UI
-                SymbolTextBlock.Text = $"CompanySymbol: {companyStocks.CompanySymbol}";
-                NewestTextBlock.Text = $"Newest: {companyStocks.Newest}$";
-                GrowthTextBlock.Text = $"Open: {companyStocks.PercentageChange}%";
+                if (companyStocks != null)
+                {
+                    var symbolTextBlock = new TextBlock { Text = $"Company Symbol: {companyStocks.CompanySymbol}" };
+                    var newestTextBlock = new TextBlock { Text = $"Newest: {companyStocks.Newest}$" };
+                    var growthTextBlock = new TextBlock { Text = $"Open: {companyStocks.PercentageChange}%" };
+
+                    var stockPanel = new StackPanel();
+                    stockPanel.Children.Add(symbolTextBlock);
+                    stockPanel.Children.Add(newestTextBlock);
+                    stockPanel.Children.Add(growthTextBlock);
+
+                    StocksStackPanel.Children.Add(stockPanel);
+                }
             }
         }
     }
