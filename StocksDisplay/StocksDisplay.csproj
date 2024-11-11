@@ -13,7 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Images\" />
+    <Folder Include="Media\Images\" />
+    <Folder Include="Media\Sounds\" />
   </ItemGroup>
 
 </Project>

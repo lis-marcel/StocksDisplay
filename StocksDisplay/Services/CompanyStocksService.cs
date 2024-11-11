@@ -21,10 +21,23 @@ namespace StocksDisplay.Services
         private async Task<CompanyData> FetchCompanyStocksFromAPI(string ticker)
         {
             var sb = new StringBuilder();
+            var date = DateTime.Now.AddDays(-1);
+
+            // Check if the date is a weekend
+            if (date.DayOfWeek == DayOfWeek.Saturday)
+            {
+                date = date.AddDays(-1); // Move to Friday
+            }
+            else if (date.DayOfWeek == DayOfWeek.Sunday)
+            {
+                date = date.AddDays(-2); // Move to Friday
+            }
+
+            var formattedDate = date.ToString("yyyy-MM-dd");
 
             sb.Append(_apiUrl +
                 ticker +
-                "/range/1/hour/2024-11-06/2024-11-06?adjusted=true&sort=asc&apiKey=" +
+                $"/range/1/hour/{formattedDate}/{formattedDate}?adjusted=true&sort=asc&apiKey=" +
                 _apiKey);
 
             var apiResponse = await new HttpClient().GetAsync(sb.ToString());

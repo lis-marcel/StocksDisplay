@@ -1,9 +1,8 @@
 ﻿<Window x:Class="StocksDisplay.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Stocks Display" Height="350" Width="525">
+        Title="Stocks Display" Height="350" Width="200">
     <Grid>
-        <Button Name="ShowActionsButton" Content="Fetch stocks of Democracy" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="20" Click="Button_Click"/>
-        <StackPanel Name="StocksStackPanel" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,25,0,0" Width="525" Height="309"/>
+        <StackPanel Name="StocksStackPanel" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,0,0,0" Width="200" Height="309"/>
     </Grid>
 </Window>
