@@ -6,8 +6,6 @@ using StocksDisplay.DTO;
 using System.Windows.Media.Imaging;
 using System.Windows.Media;
 using System.IO;
-using System.Media;
-using System.Reflection;
 
 namespace StocksDisplay
 {
@@ -19,13 +17,9 @@ namespace StocksDisplay
         {
             InitializeComponent();
             _companyStocksService = new();
-
-            Task.Run(() => PlaySound());
-
-            LoadData(this, new RoutedEventArgs());
         }
 
-        private async void LoadData(object sender, RoutedEventArgs e)
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
             // List of stock tickers to fetch
             var tickers = new List<string> { "LMT", /*"BA", "NOC", "TXN"*/ };
@@ -54,12 +48,12 @@ namespace StocksDisplay
             }
         }
 
-        private static StackPanel CreateStackPanel(CompanyData companyData)
+        private StackPanel CreateStackPanel(CompanyData companyData)
         {
             var stockPanel = new StackPanel
             {
                 Orientation = Orientation.Horizontal,
-                Margin = new Thickness(0, 0, 0, 0),
+                Margin = new Thickness(0, 10, 0, 10),
             };
 
             // Determine the gradient based on the company's growth
@@ -85,7 +79,7 @@ namespace StocksDisplay
             var projectPath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;
             var logo = new Image
             {
-                Source = new BitmapImage(new Uri($"{projectPath}\\Media\\Images\\{companyData.CompanySymbol}.png", UriKind.RelativeOrAbsolute)),
+                Source = new BitmapImage(new Uri($"{projectPath}\\Images\\{companyData.CompanySymbol}.png", UriKind.RelativeOrAbsolute)),
                 Width = 50,
                 Height = 50,
                 Margin = new Thickness(0, 0, 0, 0),
@@ -96,7 +90,7 @@ namespace StocksDisplay
             {
                 Orientation = Orientation.Vertical,
                 VerticalAlignment = VerticalAlignment.Center,
-                Margin = new Thickness(0, 0, 0, 0)
+                Margin = new Thickness(10, 0, 0, 0)
             };
 
             var companyName = CompaniesDictionary.Companies.TryGetValue(companyData.CompanySymbol, out string? value) ?
@@ -123,16 +117,6 @@ namespace StocksDisplay
             stockPanel.Children.Add(grid);
 
             return stockPanel;
-        }
-
-        private static void PlaySound()
-        {
-            var projectPath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;
-            var soundPath = $"{projectPath}\\Media\\Sounds\\wtf.mp3";
-            var player = new MediaPlayer();
-            player.Open(new Uri(soundPath));
-            player.Volume = 0.01;
-            player.Play();
         }
 
     }

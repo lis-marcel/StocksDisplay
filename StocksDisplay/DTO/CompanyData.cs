@@ -13,22 +13,17 @@ namespace StocksDisplay.DTO
         public double? Newest { get; set; }
         public double? PercentageChange { get; set; }
 
-        public CompanyData(string symbol, double open, double newest)
+        public CompanyData(string symbol, double open, double close)
         {
             CompanySymbol = symbol;
-            Open = RoundValue(open);
-            Newest = RoundValue(newest);
-            PercentageChange = CalculatePercentageChange(open, newest);
+            Open = open;
+            Newest = close;
+            PercentageChange = CalculatePercentageChange(open, close);
         }
 
         private static double CalculatePercentageChange(double open, double newest)
         {
-            return Math.Round(((newest - open) / open) * 100, 2);
-        }
-
-        private static double RoundValue(double value)
-        {
-            return Math.Round(value, 2);
+            return Math.Round(((newest - open) / open) * 100, 3);
         }
     }
 }
