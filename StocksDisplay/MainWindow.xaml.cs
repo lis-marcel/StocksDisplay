@@ -25,6 +25,8 @@ namespace StocksDisplay
             this.Left = workingArea.Right - this.Width - 10; // 10px margin from the right edge
             this.Top = workingArea.Bottom - this.Height - 10; // 10px margin from the bottom edge
             this.Background = new SolidColorBrush(Color.FromRgb(30, 30, 30)); // Dark gray color
+
+            Task.Run(() => PlaySound());
             #endregion
 
             LoadData(this, new RoutedEventArgs());
@@ -128,6 +130,16 @@ namespace StocksDisplay
             stockPanel.Children.Add(grid);
 
             return stockPanel;
+        }
+
+        private static void PlaySound()
+        {
+            var projectPath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;
+            var soundPath = $"{projectPath}\\Media\\Sounds\\wtf.mp3";
+            var player = new MediaPlayer();
+            player.Open(new Uri(soundPath));
+            player.Volume = 0.01;
+            player.Play();
         }
 
     }
