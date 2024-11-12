@@ -7,7 +7,8 @@
             { "LMT", "Lockheed Martin" },
             { "BA", "Boeing" },
             { "NOC", "Northrop Grumman" },
-            { "TXN", "Texas Instruments" }
+            { "TXN", "Texas Instruments" },
+            { "RTX", "Raytheon Technologies" }
         };
     }
 }

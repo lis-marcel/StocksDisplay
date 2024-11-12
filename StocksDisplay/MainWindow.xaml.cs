@@ -20,10 +20,11 @@ namespace StocksDisplay
             InitializeComponent();
             _companyStocksService = new();
 
-            #region Setup window location
+            #region Setup window
             var workingArea = SystemParameters.WorkArea;
             this.Left = workingArea.Right - this.Width - 10; // 10px margin from the right edge
             this.Top = workingArea.Bottom - this.Height - 10; // 10px margin from the bottom edge
+            this.Background = new SolidColorBrush(Color.FromRgb(30, 30, 30)); // Dark gray color
             #endregion
 
             LoadData(this, new RoutedEventArgs());
@@ -32,7 +33,7 @@ namespace StocksDisplay
         private async void LoadData(object sender, RoutedEventArgs e)
         {
             // List of stock tickers to fetch
-            var tickers = new List<string> { "LMT", /*"BA", "NOC", "TXN"*/ };
+            var tickers = new List<string> { "LMT", "BA", "NOC", "TXN", "RTX" };
 
             // Fetch company stocks using the service
             var companyStocksList = await _companyStocksService.GetCompanyStocks(tickers);
@@ -63,7 +64,7 @@ namespace StocksDisplay
             var stockPanel = new StackPanel
             {
                 Orientation = Orientation.Horizontal,
-                Margin = new Thickness(0, 0, 0, 0),
+                Margin = new Thickness(0, 0, 0, 1),
             };
 
             // Determine the gradient based on the company's growth
