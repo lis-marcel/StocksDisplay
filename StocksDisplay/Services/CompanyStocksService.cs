@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json.Linq;
 using System.Net.Http;
 using System.Text;
 using StocksDisplay.DTO;
@@ -8,13 +9,23 @@ namespace StocksDisplay.Services
 {
     public class CompanyStocksService
     {
-        private readonly string _apiKey = "AGqIVMhfoTWgh2r1WHcdbIcR35XBCkPE";
-        private readonly string _apiUrl = "https://api.polygon.io/v2/aggs/ticker/";
+        private readonly string? _apiKey;
+        private readonly string? _apiUrl;
+
+        public CompanyStocksService(IConfiguration configuration)
+        {
+            _apiKey = configuration.GetValue<string>("ApiSettings:ApiKey");
+            _apiUrl = configuration.GetValue<string>("ApiSettings:ApiUrl");
+        }
 
         public async Task<List<CompanyData>> GetCompanyStocks(List<string> tickers)
         {
-            var tasks = tickers.Select(ticker => FetchCompanyStocksFromAPI(ticker)).ToList();
+            var tasks = tickers.Select(ticker => 
+                FetchCompanyStocksFromAPI(ticker))
+                .ToList();
+
             var results = await Task.WhenAll(tasks);
+
             return results.ToList();
         }
 

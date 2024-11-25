@@ -8,6 +8,8 @@ using System.Windows.Media;
 using System.IO;
 using System.Media;
 using System.Reflection;
+using Microsoft.Extensions.Configuration;
+using System.Configuration;
 
 namespace StocksDisplay
 {
@@ -15,10 +17,16 @@ namespace StocksDisplay
     {
         private readonly CompanyStocksService _companyStocksService;
 
-        public MainWindow()
+        public MainWindow() : this(new ConfigurationBuilder()
+            .AddJsonFile(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory())?.Parent?.Parent?.FullName ?? string.Empty, "Config\\appsettings.json"), optional: false, reloadOnChange: true)
+            .Build())
+        {
+        }
+
+        public MainWindow(IConfiguration configuration)
         {
             InitializeComponent();
-            _companyStocksService = new();
+            _companyStocksService = new CompanyStocksService(configuration);
 
             #region Setup window
             var workingArea = SystemParameters.WorkArea;
@@ -33,7 +41,7 @@ namespace StocksDisplay
         private async void LoadData(object sender, RoutedEventArgs e)
         {
             // List of stock tickers to fetch
-            var tickers = new List<string> { "LMT", "BA", "NOC", "TXN", "RTX" };
+            var tickers = new List<string> { "LMT", /*"BA", "NOC", "TXN", "RTX"*/ };
 
             // Fetch company stocks using the service
             var companyStocksList = await _companyStocksService.GetCompanyStocks(tickers);
@@ -129,6 +137,5 @@ namespace StocksDisplay
 
             return stockPanel;
         }
-
     }
 }
