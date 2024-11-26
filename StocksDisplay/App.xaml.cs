@@ -33,6 +33,7 @@ namespace StocksDisplay
             await _host.StartAsync();
 
             var mainWindow = _host.Services.GetRequiredService<MainWindow>();
+            MainWindow = mainWindow;
             mainWindow.Show();
 
             base.OnStartup(e);

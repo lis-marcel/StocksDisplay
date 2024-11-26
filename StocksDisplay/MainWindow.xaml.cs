@@ -17,11 +17,7 @@ namespace StocksDisplay
     {
         private readonly CompanyStocksService _companyStocksService;
 
-        public MainWindow() : this(new ConfigurationBuilder()
-            .AddJsonFile(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory())?.Parent?.Parent?.FullName ?? string.Empty, "Config\\appsettings.json"), optional: false, reloadOnChange: true)
-            .Build())
-        {
-        }
+        public static readonly List<string> Tickers = ["LMT", /*"BA", "NOC", "TXN", "RTX"*/];
 
         public MainWindow(IConfiguration configuration)
         {
@@ -40,11 +36,8 @@ namespace StocksDisplay
 
         private async void LoadData(object sender, RoutedEventArgs e)
         {
-            // List of stock tickers to fetch
-            var tickers = new List<string> { "LMT", /*"BA", "NOC", "TXN", "RTX"*/ };
-
             // Fetch company stocks using the service
-            var companyStocksList = await _companyStocksService.GetCompanyStocks(tickers);
+            var companyStocksList = await _companyStocksService.GetCompanyStocks(Tickers);
 
             // Clear previous data
             StocksStackPanel.Children.Clear();
