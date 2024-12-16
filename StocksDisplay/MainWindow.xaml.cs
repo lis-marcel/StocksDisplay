@@ -1,13 +1,10 @@
 ﻿using StocksDisplay.Services;
-using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using StocksDisplay.DTO;
 using System.Windows.Media.Imaging;
 using System.Windows.Media;
 using System.IO;
-using System.Media;
-using System.Reflection;
 
 namespace StocksDisplay
 {
@@ -26,7 +23,7 @@ namespace StocksDisplay
             this.Top = workingArea.Bottom - this.Height - 10; // 10px margin from the bottom edge
             this.Background = new SolidColorBrush(Color.FromRgb(30, 30, 30)); // Dark gray color
 
-            Task.Run(() => PlaySound());
+            Task.Run(() => PlayMedia());
             #endregion
 
             LoadData(this, new RoutedEventArgs());
@@ -132,14 +129,23 @@ namespace StocksDisplay
             return stockPanel;
         }
 
-        private static void PlaySound()
+        private void PlayMedia()
         {
-            var projectPath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;
-            var soundPath = $"{projectPath}\\Media\\Sounds\\wtf.mp3";
-            var player = new MediaPlayer();
-            player.Open(new Uri(soundPath));
-            player.Volume = 0.01;
-            player.Play();
+            Dispatcher.Invoke(() =>
+            {
+                var projectPath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;
+                var soundPath = $"{projectPath}\\Media\\Video\\democracy.mp4";
+                IntroVideo.Source = new Uri(soundPath, UriKind.RelativeOrAbsolute);
+                IntroVideo.Volume = 0.01;
+                IntroVideo.Play();
+            });
+        }
+
+        private void IntroVideo_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            IntroVideo.Visibility = Visibility.Collapsed;
+            StocksStackPanel.Visibility = Visibility.Visible;
+            LoadData(this, new RoutedEventArgs());
         }
 
     }
