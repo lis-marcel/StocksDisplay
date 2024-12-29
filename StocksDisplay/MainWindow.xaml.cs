@@ -10,6 +10,7 @@ using System.Media;
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using System.Configuration;
+using StocksDisplay.MVM;
 
 namespace StocksDisplay
 {
@@ -60,7 +61,7 @@ namespace StocksDisplay
             }
         }
 
-        private static StackPanel CreateStackPanel(CompanyData companyData)
+        private StackPanel CreateStackPanel(CompanyData companyData)
         {
             var stockPanel = new StackPanel
             {
@@ -68,6 +69,15 @@ namespace StocksDisplay
                 Margin = new Thickness(0, 0, 0, 1),
             };
 
+            stockPanel.MouseLeftButtonDown += (sender, e) => OpenDetailsWindow(sender, e, companyData);
+
+            StyleStackPanel(stockPanel, companyData);         
+
+            return stockPanel;
+        }
+
+        private static StackPanel StyleStackPanel(StackPanel stockPanel, CompanyData companyData)
+        {
             // Determine the gradient based on the company's growth
             var gradientBrush = new LinearGradientBrush
             {
@@ -129,6 +139,12 @@ namespace StocksDisplay
             stockPanel.Children.Add(grid);
 
             return stockPanel;
+        }
+
+        private void OpenDetailsWindow(object sender, RoutedEventArgs e, CompanyData companyData)
+        {
+            var detailsWindow = new DetailedCompanyView(companyData);
+            detailsWindow.Show();
         }
     }
 }
