@@ -61,7 +61,7 @@ namespace StocksDisplay
             }
         }
 
-        private StackPanel CreateStackPanel(CompanyData companyData)
+        private static StackPanel CreateStackPanel(CompanyData companyData)
         {
             var stockPanel = new StackPanel
             {
@@ -141,7 +141,7 @@ namespace StocksDisplay
             return stockPanel;
         }
 
-        private void OpenDetailsWindow(object sender, RoutedEventArgs e, CompanyData companyData)
+        private static void OpenDetailsWindow(object sender, RoutedEventArgs e, CompanyData companyData)
         {
             var detailsWindow = new DetailedCompanyView(companyData);
             detailsWindow.Show();

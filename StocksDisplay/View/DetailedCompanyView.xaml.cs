@@ -19,9 +19,9 @@ namespace StocksDisplay.MVM
             // Try to get the full company name from the dictionary
             var companyName = CompaniesDictionary.Companies.TryGetValue(companyData.CompanySymbol, out string? fullName) ? fullName : companyData.CompanySymbol;
 
-            InitialData.Text = $"Company: {companyName}\n" +
-                               $"Newest: {companyData.Newest}\n" +
-                               $"Percentage Change: {companyData.PercentageChange}%";
+            //InitialData.Text = $"Company: {companyName}\n" +
+            //                   $"Newest: {companyData.Newest}\n" +
+            //                   $"Percentage Change: {companyData.PercentageChange}%";
         }
 
         private void ShowChart_Click(object sender, RoutedEventArgs e)
