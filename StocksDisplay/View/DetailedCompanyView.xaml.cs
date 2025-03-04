@@ -17,10 +17,10 @@ namespace StocksDisplay.MVM
             _companyData = companyData;
 
             // Try to get the full company name from the dictionary
-            var companyName = CompaniesDictionary.Companies.TryGetValue(companyData.CompanySymbol, out string? fullName) ? fullName : companyData.CompanySymbol;
+            var companyName = CompaniesDictionary.Companies.TryGetValue(companyData.Ticker, out string? fullName) ? fullName : companyData.Ticker;
 
             //InitialData.Text = $"Company: {companyName}\n" +
-            //                   $"Newest: {companyData.Newest}\n" +
+            //                   $"Close: {companyData.Close}\n" +
             //                   $"Percentage Change: {companyData.PercentageChange}%";
         }
 

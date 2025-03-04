@@ -8,17 +8,23 @@ namespace StocksDisplay.DTO
 {
     public class CompanyData
     {
-        public string? CompanySymbol { get; set; }
+        public string? Ticker { get; set; }
+        public DateTime? Date { get; set; }
         public double? Open { get; set; }
-        public double? Newest { get; set; }
+        public double? High { get; set; }
+        public double? Low { get; set; }
+        public double? Close { get; set; }
         public double? PercentageChange { get; set; }
 
-        public CompanyData(string symbol, double open, double newest)
+        public CompanyData(string ticker, DateTime date, double open, double high, double low, double close)
         {
-            CompanySymbol = symbol;
+            Ticker = ticker;
+            Date = date;
             Open = RoundValue(open);
-            Newest = RoundValue(newest);
-            PercentageChange = CalculatePercentageChange(open, newest);
+            High = RoundValue(high);
+            Low = RoundValue(low);
+            Close = RoundValue(close);
+            PercentageChange = CalculatePercentageChange(open, close);
         }
 
         private static double CalculatePercentageChange(double open, double newest)

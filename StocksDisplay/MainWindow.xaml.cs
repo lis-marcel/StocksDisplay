@@ -37,27 +37,23 @@ namespace StocksDisplay
 
         private async void LoadData(object sender, RoutedEventArgs e)
         {
-            // Fetch company stocks using the service
-            var companyStocksList = await _companyStocksService.GetCompanyStocks(Tickers);
+            // Fetching company stocks from CSV file for experimental purposes         
+            var companyStocks = await _companyStocksService.GetCompanyStocks("LMT");
 
             // Clear previous data
             StocksStackPanel.Children.Clear();
 
-            // Create and add UI elements for each stock's data
-            foreach (var companyStocks in companyStocksList)
+            if (companyStocks != null)
             {
-                if (companyStocks != null)
+                var stockPanel = CreateStackPanel(companyStocks);
+
+                if (stockPanel.Parent != null)
                 {
-                    var stockPanel = CreateStackPanel(companyStocks);
-
-                    if (stockPanel.Parent != null)
-                    {
-                        var parent = stockPanel.Parent as Panel;
-                        parent?.Children.Remove(stockPanel);
-                    }
-
-                    StocksStackPanel.Children.Add(stockPanel);
+                    var parent = stockPanel.Parent as Panel;
+                    parent?.Children.Remove(stockPanel);
                 }
+
+                StocksStackPanel.Children.Add(stockPanel);
             }
         }
 
@@ -101,7 +97,7 @@ namespace StocksDisplay
             var projectPath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;
             var logo = new Image
             {
-                Source = new BitmapImage(new Uri($"{projectPath}\\Media\\Images\\{companyData.CompanySymbol}.png", UriKind.RelativeOrAbsolute)),
+                Source = new BitmapImage(new Uri($"{projectPath}\\Media\\Images\\{companyData.Ticker}.png", UriKind.RelativeOrAbsolute)),
                 Width = 50,
                 Height = 50,
                 Margin = new Thickness(0, 0, 0, 0),
@@ -115,11 +111,11 @@ namespace StocksDisplay
                 Margin = new Thickness(0, 0, 0, 0)
             };
 
-            var companyName = CompaniesDictionary.Companies.TryGetValue(companyData.CompanySymbol, out string? value) ?
+            var companyName = CompaniesDictionary.Companies.TryGetValue(companyData.Ticker, out string? value) ?
                         value :
-                        companyData.CompanySymbol;
+                        companyData.Ticker;
             var symbolTextBlock = new TextBlock { Text = $"{companyName}", FontWeight = FontWeights.Bold };
-            var newestTextBlock = new TextBlock { Text = $"Current: {companyData.Newest}$" };
+            var newestTextBlock = new TextBlock { Text = $"Current: {companyData.Close}$" };
             var growthTextBlock = new TextBlock { Text = $"Growth: {companyData.PercentageChange}%" };
 
             textPanel.Children.Add(symbolTextBlock);
