@@ -38,14 +38,14 @@ namespace StocksDisplay
         private async void LoadData(object sender, RoutedEventArgs e)
         {
             // Fetching company stocks from CSV file for experimental purposes         
-            var companyStocks = await _companyStocksService.GetCompanyStocks("LMT");
+            _companyStocksService.FetchData(Tickers[0]);
 
             // Clear previous data
             StocksStackPanel.Children.Clear();
 
-            if (companyStocks != null)
+            if (_companyStocksService.NewestCompanyData != null)
             {
-                var stockPanel = CreateStackPanel(companyStocks);
+                var stockPanel = CreateStackPanel(_companyStocksService.NewestCompanyData);
 
                 if (stockPanel.Parent != null)
                 {
@@ -57,7 +57,7 @@ namespace StocksDisplay
             }
         }
 
-        private static StackPanel CreateStackPanel(CompanyData companyData)
+        private StackPanel CreateStackPanel(CompanyData companyData)
         {
             var stockPanel = new StackPanel
             {
@@ -65,7 +65,7 @@ namespace StocksDisplay
                 Margin = new Thickness(0, 0, 0, 1),
             };
 
-            stockPanel.MouseLeftButtonDown += (sender, e) => OpenDetailsWindow(sender, e, companyData);
+            stockPanel.MouseLeftButtonDown += (sender, e) => OpenDetailsWindow(sender, e, _companyStocksService.CompanyStocksData);
 
             StyleStackPanel(stockPanel, companyData);         
 
@@ -137,10 +137,11 @@ namespace StocksDisplay
             return stockPanel;
         }
 
-        private static void OpenDetailsWindow(object sender, RoutedEventArgs e, CompanyData companyData)
+        private static void OpenDetailsWindow(object sender, RoutedEventArgs e, List<CompanyData> companyData)
         {
             var detailsWindow = new DetailedCompanyView(companyData);
             detailsWindow.Show();
         }
+
     }
 }
