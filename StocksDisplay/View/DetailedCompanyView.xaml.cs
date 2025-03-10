@@ -61,15 +61,27 @@ namespace StocksDisplay.View
         {
             CompanyDataChart.Plot.Clear();
 
-            var filteredData = _companyData.GetRange(_companyData.Count - dayMmultiplier, dayMmultiplier);
+            var days = Math.Min(dayMmultiplier, _companyData.Count);
 
-            var dataX = new DateOnly[filteredData.Count];
-            dataX = filteredData.Select(x => x.Date.GetValueOrDefault()).ToArray();
+            var filteredData = _companyData
+                .Skip(_companyData.Count - days)
+                .Take(days)
+                .ToList();
 
-            var dataY = new double[filteredData.Count];
-            dataY = filteredData.Select(x => x.Close.Value).ToArray();
+            var dataX = filteredData
+                .Select(x => x.Date.GetValueOrDefault().ToDateTime(TimeOnly.MinValue))
+                .ToArray();
 
-            CompanyDataChart.Plot.Add.Scatter(dataX.Select(x => x.DayOfYear).ToArray(), dataY);
+            var dataY = filteredData
+                .Select(x => x.Close.GetValueOrDefault())
+                .ToArray();
+
+            double[] dataX_AODate = dataX.Select(x => x.ToOADate()).ToArray();
+
+            CompanyDataChart.Plot.Add.Scatter(dataX_AODate, dataY);
+
+            CompanyDataChart.Plot.Axes.DateTimeTicksBottom();
+
             CompanyDataChart.Plot.Axes.AutoScale();
 
             CompanyDataChart.Refresh();
