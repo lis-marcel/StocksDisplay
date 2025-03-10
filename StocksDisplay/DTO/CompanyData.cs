@@ -9,14 +9,14 @@ namespace StocksDisplay.DTO
     public class CompanyData
     {
         public string? Ticker { get; set; }
-        public DateTime? Date { get; set; }
+        public DateOnly? Date { get; set; }
         public double? Open { get; set; }
         public double? High { get; set; }
         public double? Low { get; set; }
         public double? Close { get; set; }
         public double? PercentageChange { get; set; }
 
-        public CompanyData(string ticker, DateTime date, double open, double high, double low, double close)
+        public CompanyData(string ticker, DateOnly date, double open, double high, double low, double close)
         {
             Ticker = ticker;
             Date = date;

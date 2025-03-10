@@ -10,7 +10,7 @@ using System.Media;
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using System.Configuration;
-using StocksDisplay.MVM;
+using StocksDisplay.View;
 
 namespace StocksDisplay
 {

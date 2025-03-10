@@ -50,7 +50,7 @@ namespace StocksDisplay.Services
                     {
                         var companyStocks = new CompanyData(
                             companyId,
-                            DateTime.ParseExact(data[2], "yyyyMMdd", CultureInfo.CurrentCulture),
+                            DateOnly.ParseExact(data[2], "yyyyMMdd", CultureInfo.CurrentCulture),
                             double.Parse(data[4], CultureInfo.InvariantCulture),
                             double.Parse(data[5], CultureInfo.InvariantCulture),
                             double.Parse(data[6], CultureInfo.InvariantCulture),
@@ -62,7 +62,6 @@ namespace StocksDisplay.Services
 
             return companyStocksData;
         }
-
 
 
     }
