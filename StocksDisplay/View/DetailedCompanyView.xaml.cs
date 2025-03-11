@@ -11,12 +11,12 @@ namespace StocksDisplay.View
     /// </summary>
     public partial class DetailedCompanyView : Window
     {
-        private readonly List<CompanyData> _companyData;
+        private readonly List<ScottPlot.OHLC> _prices;
 
         public DetailedCompanyView(List<CompanyData> companyData)
         {
             InitializeComponent();
-            _companyData = companyData;
+            _prices = Services.DataFormatConverter.ConvertToOHLC(companyData).ToList();
 
             // Try to get the full company name from the dictionary
             var companyName = CompaniesDictionary.Companies.TryGetValue(companyData[0].Ticker, out string? fullName) ? fullName : companyData[0].Ticker;
@@ -56,29 +56,18 @@ namespace StocksDisplay.View
             }
         }
 
-
         private void FilterData(int dayMmultiplier)
         {
             CompanyDataChart.Plot.Clear();
 
-            var days = Math.Min(dayMmultiplier, _companyData.Count);
+            var days = Math.Min(dayMmultiplier, _prices.Count);
 
-            var filteredData = _companyData
-                .Skip(_companyData.Count - days)
+            var filteredData = _prices
+                .Skip(_prices.Count - days)
                 .Take(days)
                 .ToList();
 
-            var dataX = filteredData
-                .Select(x => x.Date.GetValueOrDefault().ToDateTime(TimeOnly.MinValue))
-                .ToArray();
-
-            var dataY = filteredData
-                .Select(x => x.Close.GetValueOrDefault())
-                .ToArray();
-
-            double[] dataX_AODate = dataX.Select(x => x.ToOADate()).ToArray();
-
-            CompanyDataChart.Plot.Add.Scatter(dataX_AODate, dataY);
+            CompanyDataChart.Plot.Add.Candlestick(filteredData);
 
             CompanyDataChart.Plot.Axes.DateTimeTicksBottom();
 

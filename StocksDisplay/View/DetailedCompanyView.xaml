@@ -23,7 +23,7 @@
             </ComboBox>
             <Button Content="Show Chart" Width="100" Click="ShowChart_Click"/>
 
-            <ScottPlot:WpfPlot x:Name="CompanyDataChart" Height="200" Margin="10"/>
+            <ScottPlot:WpfPlot x:Name="CompanyDataChart" Height="300" Margin="10"/>
         </StackPanel>
     </Grid>
 </Window>
