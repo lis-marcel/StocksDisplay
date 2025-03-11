@@ -10,38 +10,38 @@ namespace StocksDisplay.Services
 {
     public class CompanyStocksService
     {
-        private readonly string? _localFile;
-        private List<CompanyData> _companyStocksData;
-        private CompanyData _newestCompanyData;
+        private readonly string? localFile;
+        private List<CompanyData> companyStocksData;
+        private CompanyData newestCompanyData;
 
         public List<CompanyData> CompanyStocksData
         {
-            get => _companyStocksData;
+            get => companyStocksData;
         }
 
         public CompanyData NewestCompanyData
         {
-            get => _newestCompanyData;
+            get => newestCompanyData;
         }
 
         public CompanyStocksService(IConfiguration configuration)
         {
-            _localFile = configuration.GetValue<string>("ApiSettings:LocalFile");
+            localFile = configuration.GetValue<string>("ApiSettings:LocalFile");
         }
 
         public void FetchData(string companyId)
         {
-            _companyStocksData = GetCompanyStocks(companyId);
-            _newestCompanyData = _companyStocksData[^1];
+            companyStocksData = GetCompanyStocks(companyId);
+            newestCompanyData = companyStocksData[^1];
         }
 
         private List<CompanyData> GetCompanyStocks(string companyId)
         {
             var companyStocksData = new List<CompanyData>();
 
-            if (File.Exists(_localFile))
+            if (File.Exists(localFile))
             {
-                var lines = File.ReadAllLines(_localFile).Skip(1);
+                var lines = File.ReadAllLines(localFile).Skip(1);
 
                 foreach (var line in lines)
                 {

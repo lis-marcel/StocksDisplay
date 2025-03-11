@@ -16,14 +16,14 @@ namespace StocksDisplay
 {
     public partial class MainWindow : Window
     {
-        private readonly CompanyStocksService _companyStocksService;
+        private readonly CompanyStocksService companyStocksService;
 
         public static readonly List<string> Tickers = ["LMT", /*"BA", "NOC", "TXN", "RTX"*/];
 
         public MainWindow(IConfiguration configuration)
         {
             InitializeComponent();
-            _companyStocksService = new CompanyStocksService(configuration);
+            companyStocksService = new CompanyStocksService(configuration);
 
             #region Setup window
             var workingArea = SystemParameters.WorkArea;
@@ -38,14 +38,14 @@ namespace StocksDisplay
         private async void LoadData(object sender, RoutedEventArgs e)
         {
             // Fetching company stocks from CSV file for experimental purposes         
-            _companyStocksService.FetchData(Tickers[0]);
+            companyStocksService.FetchData(Tickers[0]);
 
             // Clear previous data
             StocksStackPanel.Children.Clear();
 
-            if (_companyStocksService.NewestCompanyData != null)
+            if (companyStocksService.NewestCompanyData != null)
             {
-                var stockPanel = CreateStackPanel(_companyStocksService.NewestCompanyData);
+                var stockPanel = CreateStackPanel(companyStocksService.NewestCompanyData);
 
                 if (stockPanel.Parent != null)
                 {
@@ -65,7 +65,7 @@ namespace StocksDisplay
                 Margin = new Thickness(0, 0, 0, 1),
             };
 
-            stockPanel.MouseLeftButtonDown += (sender, e) => OpenDetailsWindow(sender, e, _companyStocksService.CompanyStocksData);
+            stockPanel.MouseLeftButtonDown += (sender, e) => OpenDetailsWindow(sender, e, companyStocksService.CompanyStocksData);
 
             StyleStackPanel(stockPanel, companyData);         
 

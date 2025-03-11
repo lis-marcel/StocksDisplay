@@ -11,12 +11,12 @@ namespace StocksDisplay.View
     /// </summary>
     public partial class DetailedCompanyView : Window
     {
-        private readonly List<ScottPlot.OHLC> _prices;
+        private readonly List<ScottPlot.OHLC> prices;
 
         public DetailedCompanyView(List<CompanyData> companyData)
         {
             InitializeComponent();
-            _prices = Services.DataFormatConverter.ConvertToOHLC(companyData).ToList();
+            prices = Services.DataFormatConverter.ConvertToOHLC(companyData).ToList();
 
             // Try to get the full company name from the dictionary
             var companyName = CompaniesDictionary.Companies.TryGetValue(companyData[0].Ticker, out string? fullName) ? fullName : companyData[0].Ticker;
@@ -60,10 +60,10 @@ namespace StocksDisplay.View
         {
             CompanyDataChart.Plot.Clear();
 
-            var days = Math.Min(dayMmultiplier, _prices.Count);
+            var days = Math.Min(dayMmultiplier, prices.Count);
 
-            var filteredData = _prices
-                .Skip(_prices.Count - days)
+            var filteredData = prices
+                .Skip(prices.Count - days)
                 .Take(days)
                 .ToList();
 
