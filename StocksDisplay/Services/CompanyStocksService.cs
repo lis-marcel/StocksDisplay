@@ -2,9 +2,9 @@
 using Newtonsoft.Json.Linq;
 using System.Net.Http;
 using System.Text;
-using StocksDisplay.DTO;
 using System.IO;
 using System.Globalization;
+using StocksDisplay.Models;
 
 namespace StocksDisplay.Services
 {

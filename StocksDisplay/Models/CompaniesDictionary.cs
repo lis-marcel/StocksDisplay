@@ -1,4 +1,4 @@
-﻿namespace StocksDisplay.DTO
+﻿namespace StocksDisplay.Models
 {
     public static class CompaniesDictionary
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StocksDisplay.DTO
+namespace StocksDisplay.Models
 {
     public class CompanyData
     {
@@ -29,7 +29,7 @@ namespace StocksDisplay.DTO
 
         private static double CalculatePercentageChange(double open, double newest)
         {
-            return Math.Round(((newest - open) / open) * 100, 2);
+            return Math.Round((newest - open) / open * 100, 2);
         }
 
         private static double RoundValue(double value)

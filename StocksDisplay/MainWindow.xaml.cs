@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using StocksDisplay.DTO;
 using System.Windows.Media.Imaging;
 using System.Windows.Media;
 using System.IO;
@@ -11,6 +10,7 @@ using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using System.Configuration;
 using StocksDisplay.View;
+using StocksDisplay.Models;
 
 namespace StocksDisplay
 {

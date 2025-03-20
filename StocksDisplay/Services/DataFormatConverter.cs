@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ScottPlot;
 using ScottPlot.WPF;
-using StocksDisplay.DTO;
+using StocksDisplay.Models;
 
 namespace StocksDisplay.Services
 {

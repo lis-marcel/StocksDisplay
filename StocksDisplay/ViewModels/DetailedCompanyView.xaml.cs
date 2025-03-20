@@ -1,8 +1,8 @@
-﻿using StocksDisplay.DTO;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using ScottPlot;
 using ScottPlot.WPF;
+using StocksDisplay.Models;
 
 namespace StocksDisplay.View
 {
@@ -27,33 +27,16 @@ namespace StocksDisplay.View
         private void ShowChart_Click(object sender, RoutedEventArgs e)
         {
             var selectedOption = (ChartOptions.SelectedItem as ComboBoxItem)?.Content.ToString();
-            switch (selectedOption)
+            
+            foreach (var option in Models.ChartOptions.Options)
             {
-                case "1 day":
-                    FilterData(1);
+                if (option.Key == selectedOption)
+                {
+                    FilterData(option.Value);
                     break;
-                case "7 days":
-                    FilterData(7);
-                    break;
-                case "1 month":
-                    FilterData(30);
-                    break;
-                case "6 month":
-                    FilterData(6 * 30);
-                    break;
-                case "1 year":
-                    FilterData(365);
-                    break;
-                case "2 years":
-                    FilterData(2 * 365);
-                    break;
-                case "5 years":
-                    FilterData(5 * 365);
-                    break;
-                case "10 years":
-                    FilterData(10 * 365);
-                    break;
+                }
             }
+
         }
 
         private void FilterData(int dayMmultiplier)
