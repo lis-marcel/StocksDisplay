@@ -43,6 +43,7 @@ namespace StocksDisplay
             // Clear previous data
             StocksStackPanel.Children.Clear();
 
+            // TODO: change this nested if!!!!!!!!!!
             if (companyStocksService.NewestCompanyData != null)
             {
                 var stockPanel = CreateStackPanel(companyStocksService.NewestCompanyData);
