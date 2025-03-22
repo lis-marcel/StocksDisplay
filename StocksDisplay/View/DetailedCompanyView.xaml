@@ -3,35 +3,17 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:ScottPlot="clr-namespace:ScottPlot.WPF;assembly=ScottPlot.WPF"
+        xmlns:oxy="http://oxyplot.org/wpf"
+        xmlns:local="clr-namespace:StocksDisplay.View"
         mc:Ignorable="d"
         Title="DetailedCompanyView" Height="450" Width="800">
     <Grid>
-        <!-- Two rows: small top row for info, large bottom row for chart -->
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+        <StackPanel Margin="10">
+            <TextBlock Name="CompanyName" FontSize="16" Margin="0,0,0,10"/>
+            <ComboBox Name="ChartOptions" Width="200" Margin="0,0,0,10"></ComboBox>
+            <Button Content="Show Chart" Width="100" Click="ShowChart_Click"/>
 
-        <!-- Top row with horizontal stack, then name+icon stacked, plus combo & button -->
-        <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="10">
-            <StackPanel Orientation="Vertical" Margin="0,0,20,0">
-                <TextBlock x:Name="CompanyName" FontSize="16" Margin="0,0,0,5" />
-                <Image x:Name="CompanyIcon" Width="50" Height="50" />
-            </StackPanel>
-
-            <StackPanel Orientation="Vertical">
-                <ComboBox x:Name="ChartOptions" Width="200" 
-                          Margin="0,0,0,10"
-                          HorizontalAlignment="Center" />
-
-                <Button Content="Show Chart"
-                        Width="100"
-                        Click="ShowChart_Click" />
-            </StackPanel>
+            <oxy:PlotView x:Name="CompanyDataChart" Height="300" Margin="10"/>
         </StackPanel>
-
-        <!-- Bottom row: chart occupies all remaining space -->
-        <ScottPlot:WpfPlot x:Name="CompanyDataChart" Grid.Row="1" Margin="10" />
     </Grid>
 </Window>
