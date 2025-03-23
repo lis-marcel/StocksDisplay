@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows;
-using OxyPlot;
+﻿using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 using StocksDisplay.Models;
+using System.Drawing;
+using System.IO;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 
 namespace StocksDisplay.View
 {
@@ -13,17 +14,19 @@ namespace StocksDisplay.View
     {
         private readonly List<CompanyData> companyData;
 
-        public DetailedCompanyView(List<CompanyData> companyData)
+        public DetailedCompanyView(List<CompanyData> companyDataCollection)
         {
-            this.companyData = companyData;
+            companyData = companyDataCollection;
 
             InitializeComponent();
-            PrepareWindowItems(companyData);
+
+            PrepareWindowItems();
         }
 
-        private void PrepareWindowItems(List<CompanyData> companyData)
+        private void PrepareWindowItems()
         {
-            FillCompanyInformations(companyData);
+            DisplayCompanyTicker();
+
             PopulateChartOptions();
         }
 
@@ -37,14 +40,18 @@ namespace StocksDisplay.View
             }
         }
 
-        private void FillCompanyInformations(List<CompanyData> companyData)
+        private void DisplayCompanyTicker()
         {
-            // Display company name
-            var companyName = CompaniesDictionary.Companies.TryGetValue(companyData[0].Ticker, out string? fullName)
-                ? fullName
-                : companyData[0].Ticker;
+            var companyName = CompaniesDictionary.Companies.TryGetValue(companyData[0].Ticker, out string? value) ?
+                        value :
+                        companyData[0].Ticker;
 
-            CompanyName.Text = $"Data for {companyName}";
+            CompanyName.Text = companyName;
+
+            var projectPath = Directory.GetParent(Directory.GetCurrentDirectory())?.Parent?.Parent?.FullName;
+            var imagePath = Path.Combine(projectPath!, "Media", "Images", $"{companyData[0].Ticker}.png");
+
+            CompanyLogo.Source = new BitmapImage(new Uri(imagePath, UriKind.RelativeOrAbsolute));
         }
 
         private void ShowChart_Click(object sender, RoutedEventArgs e)
@@ -59,24 +66,9 @@ namespace StocksDisplay.View
             }
         }
 
-        private IEnumerable<CompanyData> FilterData(int dayMultiplier)
-        {
-            var days = Math.Min(dayMultiplier, companyData.Count);
-
-            var filteredData = companyData
-                .Where(d => d.Date.HasValue && d.Open.HasValue && d.High.HasValue && d.Low.HasValue && d.Close.HasValue)
-                .Skip(companyData.Count - days)
-                .Take(days)
-                .ToList();
-
-            return filteredData;
-        }
-
-        private void GenerateChart(IEnumerable<CompanyData> filteredData)
+        private void GenerateChart(List<CompanyData> filteredData)
         {
             var plotModel = new PlotModel();
-
-            var filteredDataList = filteredData.ToList();
 
             // Replace DateTimeAxis with LinearAxis and use index-based X values
             var xAxis = new LinearAxis
@@ -86,20 +78,30 @@ namespace StocksDisplay.View
                 LabelFormatter = x =>
                 {
                     int index = (int)x;
-                    if (index >= 0 && index < filteredDataList.Count)
+                    if (index >= 0 && index < filteredData.Count)
                     {
-                        var date = filteredDataList[index].Date.Value.ToDateTime(TimeOnly.MinValue);
+                        var date = filteredData[index].Date.Value.ToDateTime(TimeOnly.MinValue);
                         return date.ToString("yyyy-MM-dd");
                     }
                     return string.Empty;
-                }
+                },
+
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Dot,
+                MajorGridlineColor = OxyColors.LightGray,
+                MinorGridlineColor = OxyColors.LightGray
             };
             plotModel.Axes.Add(xAxis);
 
             var valueAxis = new LinearAxis
             {
                 Position = AxisPosition.Left,
-                Title = "Value [$]"
+                Title = "Value [$]",
+
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Dot,
+                MajorGridlineColor = OxyColors.LightGray,
+                MinorGridlineColor = OxyColors.LightGray
             };
             plotModel.Axes.Add(valueAxis);
 
@@ -114,7 +116,7 @@ namespace StocksDisplay.View
 
                 IncreasingColor = OxyColors.Green,
                 DecreasingColor = OxyColors.Red,
-                CandleWidth = 0.6
+                CandleWidth = 0.6,
             };
 
             // Assign index-based X values to each data point
@@ -135,6 +137,18 @@ namespace StocksDisplay.View
             CompanyDataChart.Model = plotModel;
         }
 
+        private List<CompanyData> FilterData(int dayMultiplier)
+        {
+            var days = Math.Min(dayMultiplier, companyData.Count);
+
+            var filteredData = companyData
+                .Where(d => d.Date.HasValue && d.Open.HasValue && d.High.HasValue && d.Low.HasValue && d.Close.HasValue)
+                .Skip(companyData.Count - days)
+                .Take(days)
+                .ToList();
+
+            return filteredData;
+        }
 
     }
 }

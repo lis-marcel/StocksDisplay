@@ -1,16 +1,12 @@
-﻿using StocksDisplay.Services;
-using System.Collections.Generic;
+﻿using Microsoft.Extensions.Configuration;
+using StocksDisplay.Models;
+using StocksDisplay.Services;
+using StocksDisplay.View;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media.Imaging;
 using System.Windows.Media;
-using System.IO;
-using System.Media;
-using System.Reflection;
-using Microsoft.Extensions.Configuration;
-using System.Configuration;
-using StocksDisplay.View;
-using StocksDisplay.Models;
+using System.Windows.Media.Imaging;
 
 namespace StocksDisplay
 {
