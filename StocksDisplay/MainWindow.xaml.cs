@@ -31,7 +31,7 @@ namespace StocksDisplay
             LoadData(this, new RoutedEventArgs());
         }
 
-        private async void LoadData(object sender, RoutedEventArgs e)
+        private void LoadData(object sender, RoutedEventArgs e)
         {
             // Fetching company stocks from CSV file for experimental purposes         
             companyStocksService.FetchData(Tickers[0]);
@@ -137,7 +137,7 @@ namespace StocksDisplay
         private static void OpenDetailsWindow(object sender, RoutedEventArgs e, List<CompanyData> companyData)
         {
             var detailsWindow = new DetailedCompanyView(companyData);
-            detailsWindow.Show();
+            detailsWindow.ShowDialog();
         }
 
     }
