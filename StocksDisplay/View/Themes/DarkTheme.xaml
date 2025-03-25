@@ -1,0 +1,48 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <SolidColorBrush x:Key="WindowBackgroundBrush" Color="#152126"/>
+    <SolidColorBrush x:Key="WindowForegroundBrush" Color="White"/>
+
+    <SolidColorBrush x:Key="ChartTrackerBackgroundBrush" Color="#323232"/>
+
+    <Style x:Key="MainWindowStyle" TargetType="Window">
+        <Setter Property="Background" Value="{StaticResource WindowBackgroundBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource WindowForegroundBrush}"/>
+    </Style>
+
+    <Style TargetType="ComboBox">
+        <Setter Property="Background" Value="#F0F0F0"/> <!-- Light gray -->
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="BorderBrush" Value="DarkGray"/>
+    </Style>
+
+    <Style TargetType="ComboBoxItem">
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="BorderBrush" Value="LightGray"/>
+        <Style.Resources>
+            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#E0E0E0"/> <!-- Light selection color -->
+            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black"/>
+        </Style.Resources>
+        <Style.Triggers>
+            <!-- Hover Effect -->
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#D0D0D0"/> <!-- Light gray hover -->
+                <Setter Property="Foreground" Value="Black"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="Button">
+        <Setter Property="Background" Value="#3E3E3E"/>
+        <Setter Property="Foreground" Value="{StaticResource WindowForegroundBrush}"/>
+
+        <Style.Triggers>
+            <!-- Hover Effect -->
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#D0D0D0"/>
+                <Setter Property="Foreground" Value="Black"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>
