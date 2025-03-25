@@ -219,5 +219,17 @@ namespace StocksDisplay.View
             return OxyColors.Automatic;
         }
 
+        private void CenterView_Click(object sender, RoutedEventArgs e)
+        {
+            if (CompanyDataChart.Model != null)
+            {
+                foreach (var axis in CompanyDataChart.Model.Axes)
+                {
+                    axis.Reset();
+                }
+                CompanyDataChart.InvalidatePlot(true);
+            }
+        }
+
     }
 }
