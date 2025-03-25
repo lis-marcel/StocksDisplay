@@ -13,14 +13,17 @@ namespace StocksDisplay.View
     public partial class DetailedCompanyView : Window
     {
         private readonly List<CompanyData> companyData;
+        private readonly string projectPath;
 
         public DetailedCompanyView(List<CompanyData> companyDataCollection)
         {
             companyData = companyDataCollection;
+            projectPath = Directory.GetParent(Directory.GetCurrentDirectory())?.Parent?.Parent?.FullName;
 
             InitializeComponent();
-
             PrepareWindowItems();
+
+            ThemeToggle_Unchecked(null, null); // Load initial theme
         }
 
         private void PrepareWindowItems()
@@ -48,7 +51,6 @@ namespace StocksDisplay.View
 
             CompanyName.Text = companyName;
 
-            var projectPath = Directory.GetParent(Directory.GetCurrentDirectory())?.Parent?.Parent?.FullName;
             var imagePath = Path.Combine(projectPath!, "Media", "Images", $"{companyData[0].Ticker}.png");
 
             CompanyLogo.Source = new BitmapImage(new Uri(imagePath, UriKind.RelativeOrAbsolute));
@@ -68,9 +70,13 @@ namespace StocksDisplay.View
 
         private void GenerateChart(List<CompanyData> filteredData)
         {
-            var plotModel = new PlotModel();
+            var plotModel = new OxyPlot.PlotModel
+            {
+                Background = GetOxyColorFromResource("WindowBackgroundBrush"),
+                TextColor = GetOxyColorFromResource("WindowForegroundBrush"),
+                PlotAreaBorderColor = OxyColors.Gray
+            };
 
-            // Replace DateTimeAxis with LinearAxis and use index-based X values
             var xAxis = new LinearAxis
             {
                 Position = AxisPosition.Bottom,
@@ -85,11 +91,11 @@ namespace StocksDisplay.View
                     }
                     return string.Empty;
                 },
-
                 MajorGridlineStyle = LineStyle.Solid,
-                MinorGridlineStyle = LineStyle.Dot,
                 MajorGridlineColor = OxyColors.LightGray,
-                MinorGridlineColor = OxyColors.LightGray
+                TextColor = plotModel.TextColor,
+                TicklineColor = plotModel.TextColor,
+                AxislineColor = plotModel.TextColor
             };
             plotModel.Axes.Add(xAxis);
 
@@ -97,29 +103,30 @@ namespace StocksDisplay.View
             {
                 Position = AxisPosition.Left,
                 Title = "Value [$]",
-
                 MajorGridlineStyle = LineStyle.Solid,
-                MinorGridlineStyle = LineStyle.Dot,
                 MajorGridlineColor = OxyColors.LightGray,
-                MinorGridlineColor = OxyColors.LightGray
+                TextColor = plotModel.TextColor,
+                TicklineColor = plotModel.TextColor,
+                AxislineColor = plotModel.TextColor
             };
             plotModel.Axes.Add(valueAxis);
 
+            // Create the candlestick series
             var series = new CandleStickSeries
             {
                 Title = "Company Data",
+                TrackerKey = "Company Data",
                 DataFieldX = "Date",
                 DataFieldHigh = "High",
                 DataFieldLow = "Low",
                 DataFieldOpen = "Open",
                 DataFieldClose = "Close",
-
-                IncreasingColor = OxyColors.Green,
-                DecreasingColor = OxyColors.Red,
-                CandleWidth = 0.6,
+                IncreasingColor = OxyColor.Parse("#2eba7c"),
+                DecreasingColor = OxyColor.Parse("#f93647"),
+                CandleWidth = 0.6
             };
 
-            // Assign index-based X values to each data point
+            // Assign X-values as indices
             int dataIndex = 0;
             foreach (var data in filteredData)
             {
@@ -129,11 +136,12 @@ namespace StocksDisplay.View
                     High = data.High.Value,
                     Low = data.Low.Value,
                     Open = data.Open.Value,
-                    Close = data.Close.Value
+                    Close = data.Close.Value,
                 });
             }
 
             plotModel.Series.Add(series);
+
             CompanyDataChart.Model = plotModel;
         }
 
@@ -148,6 +156,67 @@ namespace StocksDisplay.View
                 .ToList();
 
             return filteredData;
+        }
+
+        private void ThemeToggle_Checked(object sender, RoutedEventArgs e)
+        {
+            var darkTheme = new ResourceDictionary
+            {
+                Source = new Uri($"{projectPath}/View/Themes/DarkTheme.xaml", UriKind.RelativeOrAbsolute)
+            };
+            Application.Current.Resources.MergedDictionaries.Clear();
+            Application.Current.Resources.MergedDictionaries.Add(darkTheme);
+            RefreshChartColors();
+
+            ThemeIcon.Source = new BitmapImage(new Uri(Path.Combine(projectPath, "Media", "Icons", "moon.png")));
+        }
+
+        private void ThemeToggle_Unchecked(object sender, RoutedEventArgs e)
+        {
+            var lightTheme = new ResourceDictionary
+            {
+                Source = new Uri($"{projectPath}/View/Themes/LightTheme.xaml", UriKind.RelativeOrAbsolute)
+            };
+            Application.Current.Resources.MergedDictionaries.Clear();
+            Application.Current.Resources.MergedDictionaries.Add(lightTheme);
+            RefreshChartColors();
+
+            ThemeIcon.Source = new BitmapImage(new Uri(Path.Combine(projectPath, "Media", "Icons", "sun.png")));
+        }
+
+        private void RefreshChartColors()
+        {
+            if (CompanyDataChart.Model == null) return;
+
+            var plotModel = CompanyDataChart.Model;
+            var newBackground = GetOxyColorFromResource("WindowBackgroundBrush");
+            var newForeground = GetOxyColorFromResource("WindowForegroundBrush");
+
+            // Match main chart background
+            plotModel.Background = newBackground;
+            plotModel.PlotAreaBackground = newBackground;
+            plotModel.TextColor = newForeground;
+            plotModel.PlotAreaBorderColor = newForeground;
+
+            // Update axes
+            foreach (var axis in plotModel.Axes)
+            {
+                axis.TextColor = newForeground;
+                axis.TicklineColor = newForeground;
+                axis.AxislineColor = newForeground;
+            }
+
+            // Redraw the chart
+            CompanyDataChart.InvalidatePlot(true);
+        }
+
+        private OxyColor GetOxyColorFromResource(string resourceKey)
+        {
+            if (Application.Current.TryFindResource(resourceKey) is System.Windows.Media.SolidColorBrush brush)
+            {
+                return OxyColor.FromArgb(brush.Color.A, brush.Color.R, brush.Color.G, brush.Color.B);
+            }
+            return OxyColors.Automatic;
         }
 
     }
