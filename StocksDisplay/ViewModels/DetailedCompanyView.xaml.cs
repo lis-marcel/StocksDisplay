@@ -2,10 +2,8 @@
 using OxyPlot.Axes;
 using OxyPlot.Series;
 using StocksDisplay.Models;
-using System.Drawing;
 using System.IO;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
 namespace StocksDisplay.View
@@ -35,8 +33,6 @@ namespace StocksDisplay.View
 
         private void PopulateChartOptions()
         {
-            // Populate ComboBox
-            ChartOptions.Items.Add("Initial View");
             foreach (var key in Models.ChartOptions.Options.Keys)
             {
                 ChartOptions.Items.Add(key);
@@ -58,9 +54,7 @@ namespace StocksDisplay.View
 
         private void ShowChart_Click(object sender, RoutedEventArgs e)
         {
-            var selectedOption = ChartOptions.SelectedItem as string;
-
-            if (Models.ChartOptions.Options.TryGetValue(selectedOption, out int days))
+            if (ChartOptions.SelectedItem is string selectedOption && Models.ChartOptions.Options.TryGetValue(selectedOption, out int days))
             {
                 var filteredData = FilterData(days);
 
@@ -86,7 +80,7 @@ namespace StocksDisplay.View
                     int index = (int)x;
                     if (index >= 0 && index < filteredData.Count)
                     {
-                        var date = filteredData[index].Date.Value.ToDateTime(TimeOnly.MinValue);
+                        var date = filteredData[index].Date!.Value.ToDateTime(TimeOnly.MinValue);
                         return date.ToString("yyyy-MM-dd");
                     }
                     return string.Empty;
@@ -114,8 +108,6 @@ namespace StocksDisplay.View
             // Create the candlestick series
             var series = new CandleStickSeries
             {
-                Title = "Company Data",
-                TrackerKey = "Company Data",
                 DataFieldX = "Date",
                 DataFieldHigh = "High",
                 DataFieldLow = "Low",
@@ -133,13 +125,12 @@ namespace StocksDisplay.View
                 series.Items.Add(new HighLowItem
                 {
                     X = dataIndex++,
-                    High = data.High.Value,
-                    Low = data.Low.Value,
-                    Open = data.Open.Value,
-                    Close = data.Close.Value,
+                    High = data.High!.Value,
+                    Low = data.Low!.Value,
+                    Open = data.Open!.Value,
+                    Close = data.Close!.Value,
                 });
             }
-
             plotModel.Series.Add(series);
 
             CompanyDataChart.Model = plotModel;
