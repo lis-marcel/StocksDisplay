@@ -25,7 +25,6 @@
 
   <ItemGroup>
     <Folder Include="Media\Images\" />
-    <Folder Include="Helpers\" />
   </ItemGroup>
 
 </Project>
