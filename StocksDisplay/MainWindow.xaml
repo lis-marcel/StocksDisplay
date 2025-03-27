@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Stocks Display" 
         Height="295" Width="200"
-        MinHeight="295" MinWidth="200">
+        MinHeight="295" MinWidth="200"
+        MaxHeight="295" MaxWidth="200">
     <Grid>
         <StackPanel Name="StocksStackPanel" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,0,0,0" Width="200" Height="309"/>
     </Grid>
