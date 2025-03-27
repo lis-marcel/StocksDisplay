@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Media\Icons\icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,6 +14,10 @@
     <EmbeddedResource Remove="Media\Sounds\**" />
     <None Remove="Media\Sounds\**" />
     <Page Remove="Media\Sounds\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Media\Icons\icon.ico" />
   </ItemGroup>
 
   <ItemGroup>

@@ -7,8 +7,8 @@
         xmlns:local="clr-namespace:StocksDisplay.View"
         mc:Ignorable="d"
         Title="DetailedCompanyView"
-        Height="450"
-        Width="800"
+        Height="450" Width="800"
+        MinHeight="400" MinWidth="680"
         Style="{DynamicResource MainWindowStyle}">
 
     <Grid Background="{DynamicResource WindowBackgroundBrush}">
