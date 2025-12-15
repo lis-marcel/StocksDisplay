@@ -33,8 +33,16 @@ namespace StocksDisplay
 
         private void LoadData(object sender, RoutedEventArgs e)
         {
+<<<<<<< Updated upstream
             // Fetching company stocks from CSV file for experimental purposes         
             companyStocksService.FetchData(Tickers[0]);
+=======
+            // List of stock tickers to fetch
+            var tickers = new List<string> { "LMT", /*"BA", "NOC", "TXN", "RTX"*/ };
+
+            // Fetch company stocks using the service
+            var companyStocksList = await _companyStocksService.GetCompanyStocks(tickers);
+>>>>>>> Stashed changes
 
             // Clear previous data
             StocksStackPanel.Children.Clear();
