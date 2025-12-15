@@ -2,6 +2,7 @@
 using StocksDisplay.Models;
 using StocksDisplay.Services;
 using StocksDisplay.View;
+using StocksDisplay.ViewModels;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,12 +15,10 @@ namespace StocksDisplay
     {
         private readonly CompanyStocksService companyStocksService;
 
-        public static readonly List<string> Tickers = ["LMT", /*"BA", "NOC", "TXN", "RTX"*/];
-
-        public MainWindow(IConfiguration configuration)
+        public MainWindow(MainViewModel mainView)
         {
             InitializeComponent();
-            companyStocksService = new CompanyStocksService(configuration);
+            DataContext = mainView;
 
             #region Setup window
             var workingArea = SystemParameters.WorkArea;
@@ -27,9 +26,8 @@ namespace StocksDisplay
             this.Top = workingArea.Bottom - this.Height - 10; // 10px margin from the bottom edge
             this.Background = new SolidColorBrush(Color.FromRgb(30, 30, 30)); // Dark gray color
             #endregion
-
-            LoadData(this, new RoutedEventArgs());
         }
+<<<<<<< HEAD
 
         private void LoadData(object sender, RoutedEventArgs e)
         {
@@ -148,5 +146,7 @@ namespace StocksDisplay
             detailsWindow.ShowDialog();
         }
 
+=======
+>>>>>>> 3968fcc0aa25f5150ea0bbf03e7fda5f1b04a360
     }
 }
