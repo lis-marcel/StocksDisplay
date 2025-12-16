@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
+using StocksDisplay.Services;
+using StocksDisplay.ViewModels;
 using System.IO;
 using System.Windows;
-using StocksDisplay.Services;
 
 namespace StocksDisplay
 {
@@ -23,6 +23,7 @@ namespace StocksDisplay
                 .ConfigureServices((context, services) =>
                 {
                     services.AddSingleton<CompanyStocksService>();
+                    services.AddSingleton<MainViewModel>();
                     services.AddSingleton<MainWindow>();
                 })
                 .Build();

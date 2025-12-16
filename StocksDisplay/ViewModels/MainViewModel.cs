@@ -4,8 +4,6 @@ using StocksDisplay.Models;
 using StocksDisplay.Services;
 using StocksDisplay.View;
 using System.Collections.ObjectModel;
-using System.Windows;
-using System.Windows.Navigation;
 
 namespace StocksDisplay.ViewModels
 {
@@ -15,12 +13,12 @@ namespace StocksDisplay.ViewModels
         private readonly CompanyStocksService _companyStocksService;
 
         [ObservableProperty]
-        private readonly ObservableCollection<CompanyData> _companyStocksData;
+        private ObservableCollection<CompanyData> _stocksList;
 
         public MainViewModel(CompanyStocksService companyStocksService)
         {
             _companyStocksService = companyStocksService;
-            _companyStocksData = new();
+            _stocksList = [];
 
             LoadData();
         }
@@ -35,16 +33,16 @@ namespace StocksDisplay.ViewModels
 
                 if (_companyStocksService.NewestCompanyData != null)
                 {
-                    CompanyStocksData.Add(_companyStocksService.NewestCompanyData);
+                    StocksList.Add(_companyStocksService.NewestCompanyData);
                 }
             }
         }
 
         [RelayCommand]
-        private void OpenDetails(CompanyData companyData)
+        private void OpenDetails(List<CompanyData> companyData)
         {
-            //var detailsWindow = new DetailedCompanyView(companyData);
-            //detailsWindow.ShowDialog();
+            var detailsWindow = new DetailedCompanyView(companyData);
+            detailsWindow.ShowDialog();
         }
     }
 }
